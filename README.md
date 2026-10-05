@@ -2,18 +2,19 @@
 
 
 ### Описание проекта:
-Блог написаный на FastAPI.
+Менеджер команл написаный на FastAPI.
 - JWT авторизация
-- CRUD пользователей
-- CRUD категорий
-- CRUD статей
-- Отправка Email
+- CRUD пользователей (users)
+- CRUD команд (teams)
+- CRUD задач (tasks)
+- CRUD встреч (meetings)
+- Календарь
 
 ### Инструменты разработки
 
 **Стек:**
 - Python >= 3.14
-- FastAPI == 0.52.0
+- FastAPI == 0.141.1
 - PostgreSQL
 
 
@@ -48,11 +49,5 @@
 
     http://127.0.0.1:8000/docs
     
-## License
-
-[BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)
-
-Copyright (c) 2020-present, DJWOMS - Omelchenko Michael
-
 
 
