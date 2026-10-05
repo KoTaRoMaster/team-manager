@@ -13,13 +13,13 @@ router = APIRouter(
 
 @router.patch("/{task_id}", status_code=200)
 async def update_task(task_data: TaskUpdate, task_id: int, service: TaskServiceDep,
-                      user: User = require_roles(UserRole.MANAGER)):
+                      user: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
     return await service.update_task(task_data, task_id, user.id)
 
 
 @router.delete("/{task_id}", status_code=204)
 async def delete_task(task_id: int, service: TaskServiceDep,
-                      _: User = require_roles(UserRole.MANAGER)):
+                      _: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
     return await service.delete_task(task_id)
 
 
@@ -31,5 +31,5 @@ async def create_comment(comment_data: CommentCreate, task_id: int, service: Tas
 
 @router.post("/{task_id}/evaluation", status_code=201)
 async def set_evaluation(evaluation_data: EvaluationCreate, task_id: int, service: TaskServiceDep,
-                         user: User = require_roles(UserRole.MANAGER)):
+                         user: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
     return await service.set_evaluation(evaluation_data, task_id, user.id)

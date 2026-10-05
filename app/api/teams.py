@@ -40,26 +40,26 @@ async def get_team_members(team_id: int, service: TeamServiceDep, _: CurrentUser
 
 @router.patch("/{team_id}/members/{member_id}", response_model=TeamMemberResponse, status_code=200)
 async def member_role_update(role_data: MemberRoleUpdate, team_id: int, member_id: int, service: TeamServiceDep,
-                             user: User = require_roles(UserRole.MANAGER)):
+                             user: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
     return await service.member_role_update(role_data, team_id, member_id, user.id)
 
 
 @router.delete("/{team_id}/members/{member_id}", status_code=204)
 async def team_member_delete(team_id: int, member_id: int, service: TeamServiceDep,
-                             user: User = require_roles(UserRole.MANAGER)):
+                             user: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
     return await service.team_member_delete(team_id, member_id, user.id)
 
 
 # task
 @router.post("/{team_id}/tasks", response_model=TaskResponse, status_code=201)
 async def create_task(task_data: TaskCreate, team_id: int, service: TaskServiceDep,
-                      user: User = require_roles(UserRole.MANAGER)):
+                      user: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
     return await service.create_task(task_data, team_id, user.id)
 
 
 @router.get("/{team_id}/tasks", response_model=list[TaskResponse], status_code=200)
 async def get_tasks(team_id: int, service: TaskServiceDep,
-                    user: User = require_roles(UserRole.MEMBER, UserRole.MANAGER)):
+                    user: CurrentUserDep):
     return await service.get_tasks(team_id, user.id)
 
 
