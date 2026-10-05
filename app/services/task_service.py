@@ -145,20 +145,19 @@ class TaskService:
         if not task:
             raise NotFoundError('task_id', task_id)
 
+        if task.status != TaskStatus.DONE:
+            raise HTTPException(status_code=400, detail=f"Оценивать можно задачи только которые 'done'")
+
         await self.session.refresh(task, attribute_names=['team'])
         if task.team.owner_id != evaluator_id:
-            raise HTTPException(403, f'Вы не являетесь создателем этой команды.')
+            raise HTTPException(status_code=403, detail=f'Вы не являетесь создателем этой команды.')
 
         evaluation = await self.evaluation_repo.get_by_id(task_id)
         if evaluation:
-            raise HTTPException(409, f'Оценка уже выставлена на данную задачу.')
+            raise HTTPException(status_code=409, detail=f'Оценка уже выставлена на данную задачу.')
 
         data = evaluation_data.model_dump(exclude_unset=True) | {'task_id': task_id, 'evaluator_id': evaluator_id}
         await self.evaluation_repo.create(data)
-
-        task_update = {'status': TaskStatus.DONE}
-        await self.task_repo.update(task, task_update)
-
         await self.session.commit()
 
     async def get_evaluation(self, task_id: int) -> EvaluationResponse:

@@ -15,4 +15,4 @@ router.include_router(teams_router)
 router.include_router(tasks_router)
 router.include_router(calendar_router)
 
-# router.include_router(dev_router)
+router.include_router(dev_router)
