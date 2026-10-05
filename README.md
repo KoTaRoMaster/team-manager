@@ -12,48 +12,39 @@
 ### Инструменты разработки
 
 **Стек:**
-- Python >= 3.7
+- Python >= 3.14
 - FastAPI == 0.52.0
 - PostgreSQL
 
-**Ссылки**:
-- [Канал Youtube](https://www.youtube.com/channel/UC_hPYclmFCIENpMUHpPY8FQ?view_as=subscriber)
-- [Telegram](https://t.me/trueDjangoChannel)
-- [Группа в VK](https://vk.com/djangochannel)
 
 ## Разработка
 
-##### 1) Сделать форк репозитория и поставить звездочку)
 
-##### 2) Клонировать репозиторий
+##### 1) Клонировать репозиторий:
 
-    git clone ссылка_сгенерированная_в_вашем_репозитории
+    git clone https://github.com/KoTaRoMaster/team-manager.git
+    
+##### 2) Перейти в директорию проекта:
 
-##### 3) Создать виртуальное окружение
+    cd team-manager
+
+##### 3) Создать виртуальное окружение:
 
     python -m venv venv
     
-##### 4) Активировать виртуальное окружение
+##### 4) Скопировать образ .env файла для корректной работы:
 
-##### 5) В папке `core` файл `local_config.py-example` переименовать в `local_config.py` и прописать конект к базе
+       cp .env.example .env
 
-##### 6) Устанавливить зависимости:
+##### 5) Собрать образы и поднять приложение и базу данных одной командой:
 
-    pip install -r req.txt
+    docker-compose.yml up --build
 
-##### 7) Выполнить команду для выполнения миграций
+##### 6) Выполнить команду для выполнения миграций:
 
-    alembic upgrade head
-    
-##### 8) Создать суперпользователя
+    docker-compose exec web alembic upgrade head
 
-    в разработке
-    
-##### 9) Запустить сервер
-
-    uvicorn main:app --reload
-    
-##### 10) Перейти по адресу
+##### 7) Перейти по адресу
 
     http://127.0.0.1:8000/docs
     
