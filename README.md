@@ -16,7 +16,7 @@
 - Python >= 3.14
 - FastAPI == 0.141.1
 - PostgreSQL
-
+- Docker
 
 ## Разработка
 
