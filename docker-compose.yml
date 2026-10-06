@@ -11,9 +11,8 @@ services:
     volumes:
       - .:/workspace
     depends_on:
-      - db           # FastAPI не запустится, пока не поднимется база данных
+      - db
 
-  # База данных PostgreSQL
   db:
     image: postgres:15-alpine
     restart: always
@@ -24,7 +23,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data  # Данные БД не пропадут при перезапуске
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
