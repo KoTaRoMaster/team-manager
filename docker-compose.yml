@@ -15,7 +15,7 @@ services:
       db:
         condition: service_healthy
 
-  db:
+  postgres:
     image: postgres:16-alpine
     environment:
       POSTGRES_USER: ${DB_USER}
