@@ -2,7 +2,7 @@
 
 
 ### Описание проекта:
-Менеджер команл написаный на FastAPI.
+Менеджер команД написаный на FastAPI.
 - JWT авторизация
 - CRUD пользователей (users)
 - CRUD команд (teams)
@@ -48,6 +48,9 @@
 ##### 7) Перейти по адресу
 
     http://127.0.0.1:8000/docs
-    
+
+#### Одна команда для всех пунктов
+
+     git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker-compose.yml up --build; docker-compose exec web alembic upgrade head
 
 
