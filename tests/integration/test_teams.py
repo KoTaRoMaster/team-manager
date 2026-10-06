@@ -43,76 +43,50 @@ class TestCreateTeam:
 
 
 class TestGetTeam:
-    # async def test_all_success_returns_200(self, client, test_team):
-    #     response = await client.get('teams')
-    #
-    #     assert response.status_code == 200
-    #     teams = response.json()
-    #     assert len(teams) == 1
-    #     team = teams[0]
-    #     assert team['name'] == 'Test team'
-    #     assert team['id'] == test_team.id
+    async def test_all_success_returns_200(self, client,auth_headers_factory, test_team):
+        headers, user = await auth_headers_factory(role=UserRole.ADMIN)
+        response = await client.get('teams', headers=headers)
 
-    # async def test_success_returns_200(self, client, test_team):
-    #     response = await client.get(f'teams/{test_team.id}')
-    #
-    #     assert response.status_code == 200
-    #     body = response.json()
-    #     assert body['name'] == 'Test team'
-    #     assert body['id'] == test_team.id
+        assert response.status_code == 200
+        teams = response.json()
+        assert len(teams) == 1
+        team = teams[0]
+        assert team['name'] == 'Test team'
+        assert team['id'] == test_team.id
 
-    async def test_not_found_returns_404(self, client):
-        response = await client.get(f'teams/2')
+    async def test_success_returns_200(self, client,auth_headers_factory, test_team):
+        headers, user = await auth_headers_factory(role=UserRole.ADMIN)
+        response = await client.get(f'teams/{test_team.id}', headers=headers)
+
+        assert response.status_code == 200
+        body = response.json()
+        assert body['name'] == 'Test team'
+        assert body['id'] == test_team.id
+
+    async def test_not_found_returns_404(self, client, auth_headers_factory):
+        headers, user = await auth_headers_factory(role=UserRole.ADMIN)
+        response = await client.get(f'teams/2', headers=headers)
         assert response.status_code == 404
 
 
-# class TestDeleteTeam:
-    # async def test_my_success(self, auth_headers_factory, client):
-    #     headers, user = await auth_headers_factory(role=UserRole.MANAGER)
-    #
-    #     payload = {"name": 'Test team'}
-    #
-    #     create_response = await client.post('teams', json=payload, headers=headers)
-    #     team = create_response.json()
-    #     response = await client.delete(f'teams/my/{team['id']}', headers=headers)
-    #
-    #     assert response.status_code == 204
+class TestDeleteTeam:
+    async def test_admin_success(self, client, auth_headers_factory, test_team):
+        headers, user = await auth_headers_factory(role=UserRole.ADMIN)
 
-    # async def test_my_unauthorized(self, auth_headers_factory, client):
-    #     headers, user = await auth_headers_factory(role=UserRole.MANAGER)
-    #
-    #     payload = {"name": 'Test team'}
-    #
-    #     create_response = await client.post('teams', json=payload, headers=headers)
-    #     team = create_response.json()
-    #
-    #     response = await client.delete(f'teams/my/{team["id"]}')
-    #     assert response.status_code == 401
-    #
-    # async def test_my_no_permission(self, client, auth_headers_factory, test_team):
-    #     headers, user = await auth_headers_factory(role=UserRole.MEMBER)
-    #
-    #     response = await client.delete(f'teams/my/{test_team.id}', headers=headers)
-    #
-    #     assert response.status_code == 403
-    #
-    # async def test_admin_success(self, client, auth_headers_factory, test_team):
-    #     headers, user = await auth_headers_factory(role=UserRole.ADMIN)
-    #
-    #     response = await client.delete(f'teams/{test_team.id}', headers=headers)
-    #
-    #     assert response.status_code == 204
-    #
-    # async def test_admin_no_permission(self, client, auth_headers_factory, test_team):
-    #     headers, user = await auth_headers_factory(role=UserRole.MANAGER)
-    #
-    #     response = await client.delete(f'teams/{test_team.id}', headers=headers)
-    #
-    #     assert response.status_code == 403
-    #
-    # async def test_admin_unauthorized(self, client, auth_headers_factory, test_team):
-    #     response = await client.delete(f'teams/{test_team.id}')
-    #     assert response.status_code == 401
+        response = await client.delete(f'teams/{test_team.id}', headers=headers)
+
+        assert response.status_code == 204
+
+    async def test_no_permission(self, client, auth_headers_factory, test_team):
+        headers, user = await auth_headers_factory(role=UserRole.MANAGER)
+
+        response = await client.delete(f'teams/{test_team.id}', headers=headers)
+
+        assert response.status_code == 403
+
+    async def test_unauthorized(self, client, auth_headers_factory, test_team):
+        response = await client.delete(f'teams/{test_team.id}')
+        assert response.status_code == 401
 
 
 class TestJoinTeam:

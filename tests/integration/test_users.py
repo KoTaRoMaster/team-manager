@@ -1,5 +1,7 @@
 import pytest
 
+from app.enums import UserRole
+
 pytestmark = [pytest.mark.integration]
 
 
@@ -79,32 +81,38 @@ class TestCreateUser:
 
 
 class TestGetUser:
-    # async def test_get_all_users_success_returns_200(self, client, user_factory):
-    #     user1 = await user_factory()
-    #     user2 = await user_factory()
-    #
-    #     response = await client.get('users')
-    #
-    #     assert response.status_code == 200
-    #     users = response.json()
-    #     assert len(users) == 2
-    #
-    #     assert users[0]['name'] == user1.name
-    #     assert users[0]['email'] == user1.email
-    #
-    #     assert users[1]['name'] == user2.name
-    #     assert users[1]['email'] == user2.email
+    async def test_get_all_users_success_returns_200(self, client, auth_headers_factory, user_factory):
+        headers, user = await auth_headers_factory(role=UserRole.ADMIN)
+        user1 = await user_factory()
+        user2 = await user_factory()
 
-    # async def test_get_user_success_returns_200(self, client, user_factory):
-    #     user = await user_factory()
-    #
-    #     response = await client.get(f'users/{user.id}')
-    #
-    #     assert response.status_code == 200
-    #     body = response.json()
-    #     assert body['name'] == user.name
-    #     assert body['id'] == user.id
+        response = await client.get('users', headers=headers)
 
-    async def test_get_user_not_found_returns_404(self, client):
-        response = await client.get(f'users/2')
+        assert response.status_code == 200
+        users = response.json()
+        assert len(users) == 3
+
+        assert users[0]['name'] == user.name
+        assert users[0]['email'] == user.email
+
+        assert users[1]['name'] == user1.name
+        assert users[1]['email'] == user1.email
+
+        assert users[2]['name'] == user2.name
+        assert users[2]['email'] == user2.email
+
+    async def test_get_user_success_returns_200(self, client, auth_headers_factory, user_factory):
+        headers, user = await auth_headers_factory(role=UserRole.ADMIN)
+        user = await user_factory()
+
+        response = await client.get(f'users/{user.id}', headers=headers)
+
+        assert response.status_code == 200
+        body = response.json()
+        assert body['name'] == user.name
+        assert body['id'] == user.id
+
+    async def test_get_user_not_found_returns_404(self, client,auth_headers_factory):
+        headers, user = await auth_headers_factory(role=UserRole.ADMIN)
+        response = await client.get(f'users/2', headers=headers)
         assert response.status_code == 404
