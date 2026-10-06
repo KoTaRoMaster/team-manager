@@ -2,7 +2,9 @@ version: "3.8"
 
 services:
   app:
-    build: .
+    build:
+      context: .
+      target: app-base
     env_file:
       - .env
     environment:
@@ -35,7 +37,9 @@ services:
       retries: 3
 
   migrate:
-    build: .
+    build:
+      context: .
+      target: migration-base
     env_file: .env
     environment:
       DB_HOST: postgres
