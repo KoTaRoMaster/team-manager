@@ -2,20 +2,21 @@
 
 
 ### Описание проекта:
-Блог написаный на FastAPI.
+Менеджер команД написаный на FastAPI.
 - JWT авторизация
-- CRUD пользователей
-- CRUD категорий
-- CRUD статей
-- Отправка Email
+- CRUD пользователей (users)
+- CRUD команд (teams)
+- CRUD задач (tasks)
+- CRUD встреч (meetings)
+- Календарь
 
 ### Инструменты разработки
 
 **Стек:**
 - Python >= 3.14
-- FastAPI == 0.52.0
+- FastAPI == 0.141.1
 - PostgreSQL
-
+- Docker
 
 ## Разработка
 
@@ -44,12 +45,10 @@
 ##### 6) Перейти по адресу
 
     http://127.0.0.1:8000/docs
-    
-## License
 
-[BSD 3-Clause License](https://opensource.org/licenses/BSD-3-Clause)
+#### Одна команда для всех пунктов
 
-Copyright (c) 2020-present, DJWOMS - Omelchenko Michael
+     git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker compose up --build; docker compose exec web alembic upgrade head
 
 
 
