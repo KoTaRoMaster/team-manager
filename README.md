@@ -48,7 +48,7 @@
 
 #### Одна команда для всех пунктов
 
-     git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker compose up --build
+    git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker compose up --build
 
 
 
