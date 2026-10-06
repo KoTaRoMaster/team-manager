@@ -39,11 +39,11 @@
 
 ##### 5) Собрать образы и поднять приложение и базу данных одной командой:
 
-    docker-compose.yml up --build
+    docker compose up --build
 
 ##### 6) Выполнить команду для выполнения миграций:
 
-    docker-compose exec web alembic upgrade head
+    docker compose exec web alembic upgrade head
 
 ##### 7) Перейти по адресу
 
@@ -51,6 +51,6 @@
 
 #### Одна команда для всех пунктов
 
-     git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker-compose.yml up --build; docker-compose exec web alembic upgrade head
+     git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker compose up --build; docker compose exec web alembic upgrade head
 
 
