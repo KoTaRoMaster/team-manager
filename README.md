@@ -2,7 +2,7 @@
 
 
 ### Описание проекта:
-Менеджер команД написаный на FastAPI.
+Менеджер команд написаный на FastAPI.
 - JWT авторизация
 - CRUD пользователей (users)
 - CRUD команд (teams)
@@ -48,7 +48,7 @@
 
 #### Одна команда для всех пунктов
 
-     git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker compose up --build
+    git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker compose up --build
 
 
 
