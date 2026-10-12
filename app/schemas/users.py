@@ -35,6 +35,10 @@ class TokenResponse(BaseModel):
     token_type: str = "Bearer"
 
 
+class UserRoleUpdate(BaseModel):
+    role: UserRole
+
+
 class UserResponse(ORMBase):
     id: int
     name: str

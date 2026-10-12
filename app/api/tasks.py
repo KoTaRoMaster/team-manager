@@ -19,8 +19,8 @@ async def update_task(task_data: TaskUpdate, task_id: int, service: TaskServiceD
 
 @router.delete("/{task_id}", status_code=204)
 async def delete_task(task_id: int, service: TaskServiceDep,
-                      _: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
-    return await service.delete_task(task_id)
+                      user: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
+    return await service.delete_task(task_id, user.id)
 
 
 @router.post("/{task_id}/comments", response_model=CommentResponse, status_code=201)

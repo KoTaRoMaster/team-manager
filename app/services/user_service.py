@@ -5,6 +5,7 @@ from app.models import User
 from app.repository import UserRepository, EvaluationRepository, MeetingRepository, TaskRepository
 from app.schemas import MyEvaluationsSummary, MyEvaluationResponse, UserCreate, UserResponse, PasswordChange, \
     TokenResponse, LoginRequest, MeetingResponse, TaskResponse
+from app.schemas.users import UserRoleUpdate
 from app.security import hash_password, verify_password, create_access_token
 
 
@@ -78,3 +79,13 @@ class UserService:
     async def get_my_tasks(self, user_id: int) -> list[TaskResponse]:
         tasks = await self.task_repo.get_user_tasks(user_id)
         return [TaskResponse.from_orm_task(task) for task in tasks]
+
+
+    async def update_user_role(self, id, update_data: UserRoleUpdate) -> UserResponse:
+        user = await self.user_repo.get_by_id(id)
+        if not user:
+            raise NotFoundError('user', id)
+        user.role = update_data.role
+        await self.session.commit()
+        await self.session.refresh(user)
+        return UserResponse.model_validate(user)

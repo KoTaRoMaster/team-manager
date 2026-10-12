@@ -6,6 +6,7 @@ from app.models import User
 from app.schemas import TokenResponse, LoginRequest, CommentResponse, TeamResponse, TaskResponse, UserResponse, \
     EvaluationResponse
 from app.enums import UserRole
+from app.schemas.users import UserRoleUpdate
 
 router = APIRouter(
     tags=["admin"]
@@ -45,6 +46,7 @@ async def get_task(task_id: int, service: TaskServiceDep, _: User = require_role
 async def get_comments(task_id: int, service: TaskServiceDep, _: User = require_roles(UserRole.ADMIN)):
     return await service.get_task_comments(task_id)
 
+# evaluations
 
 @router.get('/tasks/{task_id}/evaluation', response_model=EvaluationResponse, status_code=200)
 async def get_evaluation(task_id: int, service: TaskServiceDep, _: User = require_roles(UserRole.ADMIN)):
@@ -65,3 +67,7 @@ async def get_user(id: int, service: UserServiceDep, _: User = require_roles(Use
 @router.delete("/users/{id}", status_code=200)
 async def delete_user(id: int, service: UserServiceDep, _: User = require_roles(UserRole.ADMIN)):
     await service.delete_user(id)
+
+@router.patch("/users/{id}",response_model=UserResponse, status_code=200)
+async def update_user_role(id: int, update_user: UserRoleUpdate, service: UserServiceDep, _: User = require_roles(UserRole.ADMIN)):
+    return await service.update_user_role(id, update_user)

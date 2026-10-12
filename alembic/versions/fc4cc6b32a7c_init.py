@@ -1,8 +1,8 @@
-"""init_002
+"""init
 
-Revision ID: 5537fa1e093f
+Revision ID: fc4cc6b32a7c
 Revises: 
-Create Date: 2026-09-07 23:02:18.413346
+Create Date: 2026-10-12 11:28:35.559108
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '5537fa1e093f'
+revision: str = 'fc4cc6b32a7c'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -38,8 +38,7 @@ def upgrade() -> None:
     sa.Column('owner_id', sa.Integer(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['owner_id'], ['users.id'], ),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('owner_id')
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_teams_invite_code'), 'teams', ['invite_code'], unique=True)
     op.create_table('meetings',
@@ -78,7 +77,7 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('team_id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.Integer(), nullable=False),
-    sa.Column('role', sa.Enum('MEMBER', 'MANAGER', name='team_role'), nullable=False),
+    sa.Column('role', sa.Enum('MEMBER', 'MANAGER', 'DEVELOPER', 'TESTER', name='team_role'), nullable=False),
     sa.Column('joined_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['team_id'], ['teams.id'], ),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
@@ -103,7 +102,7 @@ def upgrade() -> None:
     sa.Column('task_id', sa.Integer(), nullable=False),
     sa.Column('evaluator_id', sa.Integer(), nullable=False),
     sa.Column('score', sa.Integer(), nullable=False),
-    sa.Column('comment', sa.Text(), nullable=False),
+    sa.Column('comment', sa.Text(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.CheckConstraint('score >= 1 AND score <= 5', name='ck_evaluation_score_range'),
     sa.ForeignKeyConstraint(['evaluator_id'], ['users.id'], ),

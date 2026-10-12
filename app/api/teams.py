@@ -11,7 +11,7 @@ from app.schemas.tasks import TaskResponse
 router = APIRouter(prefix="/teams", tags=["teams"])
 
 
-@router.post("", response_model=TeamResponse, status_code=201)
+@router.post("", status_code=201)
 async def create_team(team_data: TeamCreate, service: TeamServiceDep,
                       user: User = require_roles(UserRole.MANAGER, UserRole.ADMIN)):
     return await service.create_team(team_data, user.id)

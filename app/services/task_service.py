@@ -121,15 +121,17 @@ class TaskService:
         await self.session.commit()
         return TaskResponse.from_orm_task(updated_task)
 
-    async def delete_task(self, task_id: int) -> None:
+    async def delete_task(self, task_id: int, user_id: int) -> None:
         task = await self.task_repo.get_by_id(task_id)
         if not task:
             raise NotFoundError('task_id', task_id)
+        await self._user_is_team_owner(user_id, task.team_id)
         await self.task_repo.delete(task)
         await self.session.commit()
 
     async def create_comment(self, comment_data: CommentCreate, task_id: int, author_id: int) -> CommentResponse:
         await self._task_exist(task_id)
+        await self._user_in_team(task_id, author_id)
         data = comment_data.model_dump() | {'task_id': task_id, 'author_id': author_id}
         comment = await self.comment_repo.create(data)
         await self.session.commit()

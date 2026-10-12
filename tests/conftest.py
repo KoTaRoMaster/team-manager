@@ -16,20 +16,30 @@ from app.security import hash_password
 from app.services import TaskService
 from app.services.team_service import TeamService
 
+from alembic import command
+from alembic.config import Config
+from sqlalchemy import text
+
 TEST_DB_URL = 'postgresql+asyncpg://postgres:12345@localhost:5432/team_manager_test'
 
+
+def _upgrade(connection, cfg):
+    cfg.attributes['connection'] = connection
+    command.upgrade(cfg, 'head')
 
 @pytest_asyncio.fixture(scope="session", autouse=True)
 async def setup_test_db():
     engine = create_async_engine(TEST_DB_URL, poolclass=NullPool)
+    cfg = Config('alembic.ini')
 
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+        await conn.run_sync(_upgrade, cfg)
 
     yield
 
     async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.drop_all)
+        await conn.execute(text("DROP SCHEMA public CASCADE"))
+        await conn.execute(text("CREATE SCHEMA public"))
 
     await engine.dispose()
 
