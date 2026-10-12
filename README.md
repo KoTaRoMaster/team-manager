@@ -42,10 +42,13 @@
     docker compose up --build
 
 
-##### 6) Перейти по адресу
+##### 6) Создать пользователя
+
+    docker compose exec app python -m app.manager "имя пользователя" --role "роль" --password "пароль"
+
+##### 7) Перейти по адресу
 
     http://127.0.0.1:8000/docs
-
 #### Одна команда для всех пунктов
 
     git clone https://github.com/KoTaRoMaster/team-manager.git; cd team-manager; python -m venv venv; cp .env.example .env; docker compose up --build
